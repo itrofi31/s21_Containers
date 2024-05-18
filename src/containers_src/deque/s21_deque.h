@@ -17,8 +17,8 @@ class deque {
   ~deque();
 
   // operators
-  deque<T>& operator=(const deque<T>& other);
-  deque<T>& operator=(deque<T>&& other);
+  deque& operator=(const deque<T>& other);
+  deque& operator=(deque<T>&& other);
 
   // methods
   void push_front(const T& value);
