@@ -16,6 +16,16 @@ class queue {
   ~queue();
 
   // operators
+  queue<T>& operator=(const queue<T>& other);
+  queue<T>& operator=(queue<T>&& other);
+
+  // methods
+  void push(const<T>& value);
+  void pop();
+  const T& front();
+  const T& back();
+  bool empty();
+  std::size_t size();
 
  private:
   Container deque_;
