@@ -1,6 +1,7 @@
 #ifndef S21_CONTAINERS_H_
 #define S21_CONTAINERS_H_
 
+#include "containers_src/deque/s21_deque.h"
 #include "containers_src/list/s21_list.h"
 #include "containers_src/map/s21_map.h"
 #include "containers_src/queue/s21_queue.h"

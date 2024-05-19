@@ -47,5 +47,6 @@ class deque {
 };
 
 }  // namespace s21
+#include "s21_deque.tpp"
 
 #endif /* S21_CONTAINERS_DEQUE_H_ */

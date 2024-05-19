@@ -1,16 +1,14 @@
-#include "s21_deque.h"
-
-using namespace s21;
+// using namespace s21;
+namespace s21 {
 
 template <typename T>
 deque<T>::deque() : head_(nullptr), tail_(nullptr), size_(0) {}
 
 template <typename T>
-deque<T>::deque(const deque<T>& other)
-    : head_(nullptr), tail_(nullptr), size_(0) {
+deque<T>::deque(const deque<T>& other) : deque() {
   Node* current = other.head_;
   while (current != nullptr) {
-    push(current->data);
+    push_back(current->data);
     current = current->next;
   }
 }
@@ -24,10 +22,9 @@ deque<T>::deque(deque<T>&& other)
 }
 
 template <typename T>
-deque<T>::deque(std::initializer_list<T> const& items)
-    : head_(nullptr), tail_(nullptr) {
+deque<T>::deque(std::initializer_list<T> const& items) : deque() {
   for (const T& i : items) {
-    push(i);
+    push_back(i);
   }
 }
 
@@ -159,15 +156,4 @@ template <typename T>
 std::size_t deque<T>::size() {
   return size_;
 }
-
-int main() {
-  s21::deque<int> q;
-  q.push_back(1);
-  q.push_back(2);
-  q.push_back(3);
-
-  while (!q.empty()) {
-    std::cout << q.front() << ' ';
-    q.pop_front();
-  }
-}
+}  // namespace s21
