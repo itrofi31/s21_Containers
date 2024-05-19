@@ -2,8 +2,12 @@
 
 class QueueSampleTest : public testing::Test {};
 
-TEST_F(QueueSampleTest, test1) {
-  s21::queue<int> q{1, 2, 3};
-  for (int i = 0; i < 3; i++) {
-  }
+TEST(QueueSampleTest, test1) {
+  s21::queue<int> q = {1, 2, 3};
+  std::queue<int> std_q;
+  std_q.push(1);
+  std_q.push(2);
+  std_q.push(3);
+
+  EXPECT_EQ(q.size(), std_q.size());
 }

@@ -1,8 +1,9 @@
 #ifndef S21_CONTAINERS_QUEUE_H_
 #define S21_CONTAINERS_QUEUE_H_
 
-#include "../dequeue/s21_deque.h"
+#include <iostream>
 
+#include "../deque/s21_deque.h"
 namespace s21 {
 
 template <typename T, typename Container = deque<T>>
@@ -10,17 +11,17 @@ class queue {
  public:
   // constructors
   queue();
-  queue(const queue<T>& other);
-  queue(queue<T>&& other);
+  queue(const queue& other);
+  queue(queue&& other);
   queue(std::initializer_list<T> const& items);
   ~queue();
 
   // operators
-  queue<T>& operator=(const queue<T>& other);
-  queue<T>& operator=(queue<T>&& other);
+  queue& operator=(const queue& other);
+  queue& operator=(queue&& other);
 
   // methods
-  void push(const<T>& value);
+  void push(const T& value);
   void pop();
   const T& front();
   const T& back();
@@ -32,5 +33,5 @@ class queue {
 };
 
 }  // namespace s21
-
+#include "s21_queue.tpp"
 #endif /* S21_CONTAINERS_QUEUE_H_ */
