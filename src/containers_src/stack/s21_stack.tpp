@@ -36,7 +36,7 @@ stack<T, Container>& stack<T, Container>::operator=(stack&& other) {
 
 // methods
 template <typename T, typename Container>
-void stack<T, Container>::push(const T& value) {
+void stack<T, Container>::push(const_reference value) {
   deque_.push_front(value);
 }
 
@@ -46,7 +46,7 @@ void stack<T, Container>::pop() {
 }
 
 template <typename T, typename Container>
-const T& stack<T, Container>::top() {
+typename stack<T, Container>::const_reference stack<T, Container>::top() {
   return deque_.front();
 }
 
@@ -61,7 +61,13 @@ void stack<T, Container>::swap(stack& other) {
 }
 
 template <typename T, typename Container>
-stack<T, Container>::size_type stack<T, Container>::size() {
+typename stack<T, Container>::size_type stack<T, Container>::size() {
   return deque_.size();
+}
+
+template <typename T, typename Container>
+template <typename... Args>
+void stack<T, Container>::insert_many_front(Args&&... args) {
+  (push(args), ...);
 }
 }  // namespace s21
