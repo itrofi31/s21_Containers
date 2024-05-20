@@ -37,7 +37,7 @@ queue<T, Container>& queue<T, Container>::operator=(queue&& other) {
 }
 
 template <typename T, typename Container>
-void queue<T, Container>::push(const T& value) {
+void queue<T, Container>::push(const_reference value) {
   deque_.push_back(value);
 }
 
@@ -47,12 +47,12 @@ void queue<T, Container>::pop() {
 }
 
 template <typename T, typename Container>
-const T& queue<T, Container>::front() {
+typename queue<T, Container>::const_reference queue<T, Container>::front() {
   return deque_.front();
 }
 
 template <typename T, typename Container>
-const T& queue<T, Container>::back() {
+typename queue<T, Container>::const_reference queue<T, Container>::back() {
   return deque_.back();
 }
 
@@ -67,7 +67,13 @@ void queue<T, Container>::swap(queue& other) {
 }
 
 template <typename T, typename Container>
-std::size_t queue<T, Container>::size() {
+typename queue<T, Container>::size_type queue<T, Container>::size() {
   return deque_.size();
+}
+
+template <typename T, typename Container>
+template <class... Args>
+void queue<T, Container>::insert_many_back(Args&&... args) {
+  (push(args), ...);
 }
 }  // namespace s21

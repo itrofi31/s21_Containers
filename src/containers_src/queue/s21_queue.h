@@ -2,30 +2,48 @@
 #define S21_CONTAINERS_QUEUE_H_
 
 #include "../deque/s21_deque.h"
+
+// STL reference
+// https://en.cppreference.com/w/cpp/container/queue
+
 namespace s21 {
 
 template <typename T, typename Container = deque<T>>
 class queue {
  public:
+  using value_type = T;
+  using reference = T&;
+  using const_reference = const T&;
+  using size_type = std::size_t;
+
   // constructors
   queue();
   queue(const queue& other);
   queue(queue&& other);
-  queue(std::initializer_list<T> const& items);
+  queue(std::initializer_list<value_type> const& items);
   ~queue();
 
   // operators
   queue& operator=(const queue& other);
   queue& operator=(queue&& other);
 
-  // methods
-  void push(const T& value);
-  void pop();
-  const T& front();
-  const T& back();
+  // ACCESS
+  const_reference front();
+  const_reference back();
+
+  // CAPACITY
   bool empty();
+  size_type size();
+
+  // MODIFIERS
+  void push(const_reference value);
+  void pop();
   void swap(queue& other);
-  std::size_t size();
+
+  // ADDITIONAL
+
+  template <class... Args>
+  void insert_many_back(Args&&... args);
 
  private:
   Container deque_;
