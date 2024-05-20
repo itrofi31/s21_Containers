@@ -5,7 +5,7 @@ template <typename T, typename Container>
 stack<T, Container>::stack() : deque_() {}
 
 template <typename T, typename Container>
-stack<T, Container>::stack(const stack& other) : deque_(other, deque_) {}
+stack<T, Container>::stack(const stack& other) : deque_(other.deque_) {}
 
 template <typename T, typename Container>
 stack<T, Container>::stack(stack&& other) : deque_(std::move(other.deque_)) {}
