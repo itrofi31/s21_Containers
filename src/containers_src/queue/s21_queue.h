@@ -1,8 +1,6 @@
 #ifndef S21_CONTAINERS_QUEUE_H_
 #define S21_CONTAINERS_QUEUE_H_
 
-#include <iostream>
-
 #include "../deque/s21_deque.h"
 namespace s21 {
 
@@ -26,6 +24,7 @@ class queue {
   const T& front();
   const T& back();
   bool empty();
+  void swap(queue& other);
   std::size_t size();
 
  private:

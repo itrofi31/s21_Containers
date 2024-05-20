@@ -62,6 +62,11 @@ bool queue<T, Container>::empty() {
 }
 
 template <typename T, typename Container>
+void queue<T, Container>::swap(queue& other) {
+  deque_.swap(other.deque_);
+}
+
+template <typename T, typename Container>
 std::size_t queue<T, Container>::size() {
   return deque_.size();
 }
