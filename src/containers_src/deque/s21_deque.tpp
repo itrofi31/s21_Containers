@@ -5,7 +5,7 @@ template <typename T>
 deque<T>::deque() : head_(nullptr), tail_(nullptr), size_(0) {}
 
 template <typename T>
-deque<T>::deque(const deque<T>& other) : deque() {
+deque<T>::deque(const deque& other) : deque() {
   Node* current = other.head_;
   while (current != nullptr) {
     push_back(current->data);
@@ -14,7 +14,7 @@ deque<T>::deque(const deque<T>& other) : deque() {
 }
 
 template <typename T>
-deque<T>::deque(deque<T>&& other)
+deque<T>::deque(deque&& other)
     : head_(other.head_), tail_(other.tail_), size_(other.size_) {
   other.head_ = nullptr;
   other.tail_ = nullptr;
@@ -22,7 +22,7 @@ deque<T>::deque(deque<T>&& other)
 }
 
 template <typename T>
-deque<T>::deque(std::initializer_list<T> const& items) : deque() {
+deque<T>::deque(std::initializer_list<value_type> const& items) : deque() {
   for (const T& i : items) {
     push_back(i);
   }
@@ -34,7 +34,7 @@ deque<T>::~deque() {
 }
 
 template <typename T>
-void deque<T>::push_front(const T& value) {
+void deque<T>::push_front(const_reference value) {
   Node* new_node = new Node(value);
   new_node->next = head_;
   new_node->prev = nullptr;
@@ -49,7 +49,7 @@ void deque<T>::push_front(const T& value) {
 }
 
 template <typename T>
-void deque<T>::push_back(const T& value) {
+void deque<T>::push_back(const_reference value) {
   Node* new_node = new Node(value);
   new_node->next = nullptr;
   new_node->prev = tail_;
@@ -94,7 +94,7 @@ void deque<T>::pop_back() {
 }
 
 template <typename T>
-deque<T>& deque<T>::operator=(const deque<T>& other) {
+deque<T>& deque<T>::operator=(const deque& other) {
   if (this != &other) {
     clear();
     for (Node* current = other.head_; current != nullptr;
@@ -106,7 +106,7 @@ deque<T>& deque<T>::operator=(const deque<T>& other) {
 }
 
 template <typename T>
-deque<T>& deque<T>::operator=(deque<T>&& other) {
+deque<T>& deque<T>::operator=(deque&& other) {
   if (this != &other) {
     clear();
     swap(other);
@@ -118,7 +118,7 @@ deque<T>& deque<T>::operator=(deque<T>&& other) {
 }
 
 template <typename T>
-const T& deque<T>::front() {
+typename deque<T>::const_reference deque<T>::front() {
   if (!empty()) {
     return head_->data;
   }
@@ -126,7 +126,7 @@ const T& deque<T>::front() {
 }
 
 template <typename T>
-const T& deque<T>::back() {
+typename deque<T>::const_reference deque<T>::back() {
   if (tail_ != nullptr) {
     return tail_->data;
   }
@@ -139,7 +139,7 @@ bool deque<T>::empty() {
 }
 
 template <typename T>
-void deque<T>::swap(deque<T>& other) {
+void deque<T>::swap(deque& other) {
   std::swap(head_, other.head_);
   std::swap(tail_, other.tail_);
   std::swap(size_, other.size_);
@@ -153,7 +153,7 @@ void deque<T>::clear() {
 }
 
 template <typename T>
-std::size_t deque<T>::size() {
+typename deque<T>::size_type deque<T>::size() {
   return size_;
 }
 }  // namespace s21

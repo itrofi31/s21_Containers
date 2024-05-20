@@ -1,41 +1,47 @@
 #ifndef S21_CONTAINERS_DEQUE_H_
 #define S21_CONTAINERS_DEQUE_H_
 
-#include <iostream>
-#include <utility>
+#include <cstddef>           // std::size_t
+#include <initializer_list>  // std::initializer_list
+#include <utility>           //std::swap
 
 namespace s21 {
 
 template <typename T>
 class deque {
  public:
+  using value_type = T;
+  using reference = T&;
+  using const_reference = const T&;
+  using size_type = std::size_t;
+
   // constructors
   deque();
-  deque(const deque<T>& other);
-  deque(deque<T>&& other);
-  deque(std::initializer_list<T> const& items);
+  deque(const deque& other);
+  deque(deque&& other);
+  deque(std::initializer_list<value_type> const& items);
   ~deque();
 
   // operators
-  deque& operator=(const deque<T>& other);
-  deque& operator=(deque<T>&& other);
+  deque& operator=(const deque& other);
+  deque& operator=(deque&& other);
 
   // methods
-  void push_front(const T& value);
-  void push_back(const T& value);
+  void push_front(const_reference value);
+  void push_back(const_reference value);
   void pop_front();
   void pop_back();
 
-  const T& front();
-  const T& back();
+  const_reference front();
+  const_reference back();
   bool empty();
-  void swap(deque<T>& other);
+  void swap(deque& other);
   void clear();
-  std::size_t size();
+  size_type size();
 
  protected:
   struct Node {
-    T data;
+    value_type data;
     Node* next;
     Node* prev;
     Node(T data) : data(data), next(nullptr), prev(nullptr) {}
