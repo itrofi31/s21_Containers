@@ -5,6 +5,9 @@
 #include <initializer_list>  // std::initializer_list
 #include <utility>           //std::swap
 
+// STL reference
+// https://en.cppreference.com/w/cpp/container/deque
+
 namespace s21 {
 
 template <typename T>

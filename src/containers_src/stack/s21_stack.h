@@ -2,6 +2,10 @@
 #define S21_CONTAINERS_STACK_H_
 
 #include "../deque/s21_deque.h"
+
+// STL reference
+// https://en.cppreference.com/w/cpp/container/stack
+
 namespace s21 {
 
 template <typename T, typename Container = deque<T>>
