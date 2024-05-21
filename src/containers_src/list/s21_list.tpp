@@ -147,9 +147,25 @@ typename list<T>::const_iterator list<T>::cend() const {
   return deque<T>::head_ ? const_iterator(deque<T>::tail_->next) : begin();
 }
 
-// template <typename T>
-// typename list<T>::iterator list<T>::insert(iterator pos,
-//                                            const_reference value) {}
+template <typename T>
+typename list<T>::iterator list<T>::insert(iterator pos,
+                                           const_reference value) {
+  if (pos == begin()) {
+    push_front(value);
+    return begin();
+  } else if (pos == end()) {
+    push_back(value);
+    return --end();
+  } else {
+    typename deque<T>::Node* cur = pos.ptr_;
+    typename deque<T>::Node* new_node = new typename deque<T>::Node(value);
+    new_node->prev = cur->prev;
+    cur->prev->next = new_node;
+    cur->prev = new_node;
+    new_node->next = cur;
+    return iterator(new_node);
+  }
+}
 
 template <typename T>
 void list<T>::push_back(const_reference value) {
