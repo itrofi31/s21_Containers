@@ -29,18 +29,21 @@ class deque {
   deque& operator=(const deque& other);
   deque& operator=(deque&& other);
 
-  // methods
+  // ACCESS
+  const_reference front();
+  const_reference back();
+
+  // CAPACITY
+  bool empty();
+  size_type size();
+
+  // MODIFIERS
   void push_front(const_reference value);
   void push_back(const_reference value);
   void pop_front();
   void pop_back();
-
-  const_reference front();
-  const_reference back();
-  bool empty();
   void swap(deque& other);
   void clear();
-  size_type size();
 
  protected:
   struct Node {
