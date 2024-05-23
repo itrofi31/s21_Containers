@@ -44,6 +44,8 @@ class list : deque<T> {
   };  // class ListIterator
 
   class ListConstIterator : ListIterator {
+    friend class list<T>;
+
    public:
     ListConstIterator();
     ListConstIterator(const ListIterator& ptr_);

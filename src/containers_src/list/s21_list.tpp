@@ -197,8 +197,18 @@ void list<T>::swap(list& other) {
 // template <typename T>
 // void list<T>::merge(list& other) {}
 
-// template <typename T>
-// void list<T>::splice(const_iterator pos, list& other) {}
+template <typename T>
+void list<T>::splice(const_iterator pos, list& other) {
+  if (this != &other && !other.empty()) {
+    iterator pos_it = pos;
+
+    while (!other.empty()) {
+      iterator it = other.begin();
+      insert(pos_it, *it);
+      other.pop_front();
+    }
+  }
+}
 
 template <typename T>
 void list<T>::reverse() {
