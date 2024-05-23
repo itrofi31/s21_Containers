@@ -268,4 +268,24 @@ template <typename T>
 void list<T>::clear() {
   deque<T>::clear();
 }
+
+template <typename T>
+template <class... Args>
+typename list<T>::iterator list<T>::insert_many(const_iterator pos,
+                                                Args&&... args) {
+  ((insert(pos, args)), ...);
+  return pos;
+}
+
+template <typename T>
+template <class... Args>
+void list<T>::insert_many_back(Args&&... args) {
+  ((push_back(args)), ...);
+}
+
+template <typename T>
+template <class... Args>
+void list<T>::insert_many_front(Args&&... args) {
+  ((push_front(args)), ...);
+}
 }  // namespace s21
