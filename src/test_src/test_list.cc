@@ -49,10 +49,43 @@ TEST(List, splice) {
   s21::list<int>::iterator it = list.begin();
   it++;
   list.splice(it, slist);
-  s21::list<int> expected = {1, 2, 3, 4, 5, 6};
   it = list.begin();
   for (int i = 1; i < 7; ++i, ++it) {
     EXPECT_EQ(*it, i);
   }
   EXPECT_TRUE(slist.empty());
+}
+
+TEST(List, insert_many) {
+  s21::list<int> list = {1, 5, 6};
+  s21::list<int>::iterator it = list.begin();
+  it++;
+  list.insert_many(it, 2, 3, 4);
+  it = list.begin();
+  for (int i = 1; i < 7; ++i, ++it) {
+    EXPECT_EQ(*it, i);
+  }
+}
+
+TEST(List, insert_many_back) {
+  s21::list<int> list = {1, 2, 3};
+  s21::list<int>::iterator it = list.begin();
+  it++;
+  list.insert_many_back(4, 5, 6);
+  it = list.begin();
+  for (int i = 1; i < 7; ++i, ++it) {
+    EXPECT_EQ(*it, i);
+  }
+}
+
+TEST(List, insert_many_front) {
+  s21::list<int> list = {4, 5, 6};
+  s21::list<int>::iterator it = list.begin();
+  it++;
+  list.insert_many_front(3, 2, 1);
+  it = list.begin();
+  for (int i = 1; i < 7; ++i, ++it) {
+    EXPECT_EQ(*it, i);
+    std::cout << *it;
+  }
 }
