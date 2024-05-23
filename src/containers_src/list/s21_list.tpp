@@ -16,7 +16,8 @@ typename list<T>::reference list<T>::ListIterator::operator*() const {
 
 template <typename T>
 typename list<T>::ListIterator& list<T>::ListIterator::operator++() {
-  return ptr_ = ptr_->next;
+  ptr_ = ptr_->next;
+  return *this;
 }
 
 template <typename T>
@@ -29,6 +30,7 @@ typename list<T>::ListIterator list<T>::ListIterator::operator++(int) {
 template <typename T>
 typename list<T>::ListIterator& list<T>::ListIterator::operator--() {
   ptr_ = ptr_->prev;
+  return *this;
 }
 
 template <typename T>
@@ -129,22 +131,22 @@ typename list<T>::size_type list<T>::max_size() {
 
 template <typename T>
 typename list<T>::iterator list<T>::begin() {
-  return iterator(deque<T>::head_);
+  return iterator(this->head_);
 }
 
 template <typename T>
 typename list<T>::iterator list<T>::end() {
-  return deque<T>::head_ ? iterator(deque<T>::tail_->next) : begin();
+  return this->head_ ? iterator(this->tail_->next) : begin();
 }
 
 template <typename T>
 typename list<T>::const_iterator list<T>::cbegin() const {
-  return const_iterator(deque<T>::head_);
+  return const_iterator(this->head_);
 }
 
 template <typename T>
 typename list<T>::const_iterator list<T>::cend() const {
-  return deque<T>::head_ ? const_iterator(deque<T>::tail_->next) : begin();
+  return this->head_ ? const_iterator(this->tail_->next) : begin();
 }
 
 template <typename T>
@@ -206,18 +208,51 @@ void list<T>::reverse() {
       std::swap(cur->next, cur->prev);
       cur = cur->prev;
     }
-    std::swap(deque<T>::head_, deque<T>::tail_);
+    std::swap(this->head_, this->tail_);
+  }
+}
+
+template <typename T>
+void list<T>::unique() {
+  if (begin() != end()) {
+    iterator it = begin();
+    while (it != end()) {
+      iterator next = it;
+      ++next;
+      while (next != end() && *it == *next) {
+        erase(next);
+        next = it;
+        ++next;
+      }
+      ++it;
+    }
   }
 }
 
 // template <typename T>
-// void list<T>::unique() {}
-
-// template <typename T>
 // void list<T>::sort() {}
 
-// template <typename T>
-// void list<T>::erase(iterator pos) {}
+template <typename T>
+void list<T>::erase(iterator pos) {
+  typename deque<T>::Node* cur = pos.ptr_;
+  typename deque<T>::Node* next_node = cur->next;
+  if (pos != end()) {
+    if (cur->prev) {
+      cur->prev->next = next_node;
+    } else {
+      this->head_ = next_node;
+    }
+
+    if (next_node) {
+      next_node->prev = cur->prev;
+    } else {
+      this->tail_ = cur->prev;
+    }
+
+    delete cur;
+    this->size_--;
+  }
+}
 
 template <typename T>
 void list<T>::clear() {
