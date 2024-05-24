@@ -4,43 +4,32 @@ CC := g++
 CFLAGS := -Wall -Werror -Wextra -std=c++17
 LFLAGS := -lgtest
 
-LIB_A := s21_containers.a
-LIB_CC := $(wildcard containers_src/*/*.cc)
-LIB_CC += $(wildcard containersplus_src/*/*.cc)
-LIB_O := $(patsubst %.cc,%.o,$(LIB_CC))
-LIB_H := $(patsubst %.cc,%.h,$(LIB_CC))
+LIB_H := $(wildcard containers_src/*/*.h)
+LIB_H += $(wildcard containersplus_src/*/*.h)
+LIB_TPP := $(patsubst %.h,%.tpp,$(LIB_H))
 
 TEST_CC := $(wildcard test_src/*.cc)
 
-CODE := $(LIB_CC) $(TEST_CC) $(wildcard *.h) $(wildcard test_src/*.h) $(LIB_H)
+CODE := $(TEST_CC) $(wildcard *.h) $(wildcard test_src/*.h) $(LIB_H) $(LIB_TPP)
 
 define compile
 	$(info # compile $@)
 	$(CC) -o $@ $(CFLAGS) $(INCS) $(DFLAGS) $(1) $(filter %.cc,$^) $(LFLAGS)
 endef
 
-all: clean $(LIB_A)
+all: clean test
 
 clean:
-	rm -f $(LIB_A) $(LIB_O) test *.info *.dSYM *.gcda *.gcno
+	rm -f test *.info *.dSYM *.gcda *.gcno valgrind.log
 	rm -rf report/
 
-# LIBRARY BUILD
-$(LIB_A): $(LIB_O)
-	ar rcs $@ $(LIB_O)
-	ranlib $@
-
-.cc.o:
-	$(call compile, -c)
-
 # TESTS
-test: $(LIB_CC) $(TEST_CC)
+test: $(TEST_CC)
 	$(call compile, --coverage)
 	./test
 
 gcov_report: test
 	lcov -t "result" --no-external -o res.info -c -d .
-	./result
 	genhtml -o report res.info
 	-open report/index.html
 
@@ -51,9 +40,11 @@ check:
 	cppcheck --enable=all --language=c++ --suppress=missingIncludeSystem $(CODE)
 
 leaks: test
-	leaks --atExit -- ./$(TEST_TARGET)
+	leaks --atExit -- ./test
 
 valgrind: test
-	valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes ./test
+	CK_FORK=no valgrind --vgdb=no --leak-check=full --show-leak-kinds=all \
+	--track-origins=yes --log-file="valgrind.log" \
+	-v --verbose -q --quiet -s ./test
 
-.PHONY: all clean test gcov_report check leaks valgrind
+.PHONY: all clean gcov_report check leaks valgrind
