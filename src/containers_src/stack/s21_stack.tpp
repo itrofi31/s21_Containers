@@ -68,6 +68,6 @@ typename stack<T, Container>::size_type stack<T, Container>::size() {
 template <typename T, typename Container>
 template <typename... Args>
 void stack<T, Container>::insert_many_front(Args&&... args) {
-  (push(args), ...);
+  (push(args), ...);  // push(1),push(2)...
 }
 }  // namespace s21
