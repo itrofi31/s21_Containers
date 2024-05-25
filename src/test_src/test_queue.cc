@@ -2,19 +2,19 @@
 
 class QueueSampleTest : public testing::Test {};
 
-TEST(queue, constructor_1) {
+TEST(Queue, constructor_1) {
   s21::queue<int> q;
   EXPECT_TRUE(q.empty());
 }
 
-TEST(queue, constructor_2) {
+TEST(Queue, constructor_2) {
   s21::queue<int> q;
   q.push(1);
   s21::queue<int> new_q = q;
   EXPECT_EQ(q.front(), new_q.front());
 }
 
-TEST(queue, constructor_3) {
+TEST(Queue, constructor_3) {
   s21::queue<int> q;
   q.push(1);
   s21::queue<int> new_q = std::move(q);
@@ -22,7 +22,7 @@ TEST(queue, constructor_3) {
   EXPECT_TRUE(q.empty());
 }
 
-TEST(queue, operator_1) {
+TEST(Queue, operator_1) {
   s21::queue<int> q = {1, 2, 3};
   s21::queue<int> new_q;
   new_q = q;
@@ -31,7 +31,7 @@ TEST(queue, operator_1) {
   EXPECT_EQ(q.back(), 3);
 }
 
-TEST(queue, operator_2) {
+TEST(Queue, operator_2) {
   s21::queue<int> q = {1, 2, 3};
   s21::queue<int> new_q;
   new_q = std::move(q);
@@ -40,17 +40,17 @@ TEST(queue, operator_2) {
   EXPECT_TRUE(q.empty());
 }
 
-TEST(queue, push) {
-  s21::queue<int> q = {1, 2, 3};
+TEST(Queue, push) {
+  s21::queue<int> q;
   std::queue<int> std_q;
-  std_q.push(1);
-  std_q.push(2);
-  std_q.push(3);
-
+  for (int i = 0; i < 3; i++) {
+    q.push(i);
+    std_q.push(i);
+  }
   EXPECT_EQ(q.size(), std_q.size());
 }
 
-TEST(queue, pop) {
+TEST(Queue, pop) {
   s21::queue<int> q = {1, 2, 3};
   std::queue<int> std_q;
   std_q.push(2);
@@ -61,7 +61,7 @@ TEST(queue, pop) {
   EXPECT_EQ(q.back(), std_q.back());
 }
 
-TEST(queue, swap) {
+TEST(Queue, swap) {
   s21::queue<int> q = {1, 2, 3};
   s21::queue<int> q2 = {1};
   q.swap(q2);
@@ -70,10 +70,20 @@ TEST(queue, swap) {
   EXPECT_EQ(q2.back(), 3);
 }
 
-TEST(queue, insert_many_back) {
+TEST(Queue, insert_many_back) {
   s21::queue<int> q = {1};
   q.insert_many_back(2, 3, 4, 5);
 
   EXPECT_TRUE(q.size() == 5);
   EXPECT_EQ(q.back(), 5);
+}
+
+TEST(Queue, front_empty) {
+  s21::queue<int> q;
+  EXPECT_ANY_THROW(q.front());
+}
+
+TEST(Queue, back_empty) {
+  s21::queue<int> q;
+  EXPECT_ANY_THROW(q.back());
 }
