@@ -214,8 +214,28 @@ void list<T>::swap(list& other) {
   deque<T>::swap(other);
 }
 
-// template <typename T>
-// void list<T>::merge(list& other) {}
+template <typename T>
+void list<T>::merge(list& other) {
+  if (this == &other) return;
+
+  iterator it1 = begin();
+  iterator it2 = other.begin();
+
+  while (it1 != end() && it2 != other.end()) {
+    if (*it2 < *it1) {
+      this->insert(it1, *it2);
+      ++it2;
+    }
+    ++it1;
+  }
+
+  while (it2 != other.end()) {
+    this->insert(it1, *it2);
+    ++it2;
+  }
+
+  other.clear();
+}
 
 template <typename T>
 void list<T>::splice(const_iterator pos, list& other) {
@@ -259,6 +279,7 @@ void list<T>::unique() {
   }
 }
 template <typename T>
+
 void list<T>::sort() {
   if (!empty()) {
     quickSort(begin(), --end());
