@@ -86,6 +86,18 @@ TEST(List, insert_many_front) {
   it = list.begin();
   for (int i = 1; i < 7; ++i, ++it) {
     EXPECT_EQ(*it, i);
-    std::cout << *it;
+  }
+}
+
+TEST(List, sort) {
+  s21::list<int> list = {4, 1, 6, 0, -21, 10};
+  std::list<int> slist = {4, 1, 6, 0, -21, 10};
+
+  list.sort();
+  slist.sort();
+  auto it = slist.begin();
+
+  for (const auto& i : list) {
+    EXPECT_EQ(i, *it++);
   }
 }
