@@ -267,14 +267,14 @@ void list<T>::sort() {
 
 template <typename T>
 void list<T>::quickSort(iterator first, iterator last) {
-  if (first != last && first != nullptr) {
+  if (first != last && first.ptr_ != nullptr) {
     iterator pivot = partition(first, last);
     if (pivot != first) {
       iterator before_pivot = pivot;
       --before_pivot;
       quickSort(first, before_pivot);
     }
-    quickSort(++pivot, last);
+    quickSort(pivot, last);
   }
 }
 
