@@ -10,7 +10,7 @@
 
 namespace s21 {
 template <typename T>
-class list : deque<T> {
+class list : public deque<T> {
  public:
   class ListIterator;
   class ListConstIterator;
@@ -27,8 +27,7 @@ class list : deque<T> {
 
    public:
     ListIterator();
-    ListIterator(typename deque<T>::Node* ptr);
-
+    ListIterator(typename deque<T>::Node* ptr, list<T>* parent);
     reference operator*() const;
 
     ListIterator& operator++();
@@ -41,6 +40,8 @@ class list : deque<T> {
 
    protected:
     typename deque<T>::Node* ptr_;
+    list<T>* parent_;
+    // typename deque<T>::Node* last_node_;
   };  // class ListIterator
 
   class ListConstIterator : ListIterator {
@@ -109,7 +110,8 @@ class list : deque<T> {
   void insert_many_front(Args&&... args);
 
  private:
-  // Container deque_;
+  void quickSort(iterator first, iterator last);
+  iterator partition(iterator first, iterator last);
 };  // class list
 }  // namespace s21
 

@@ -1,10 +1,12 @@
 namespace s21 {
 
 template <typename T>
-list<T>::ListIterator::ListIterator() : ptr_(nullptr) {}
+list<T>::ListIterator::ListIterator() : ptr_(nullptr), parent_(nullptr) {}
 
 template <typename T>
-list<T>::ListIterator::ListIterator(typename deque<T>::Node* ptr) : ptr_(ptr) {}
+list<T>::ListIterator::ListIterator(typename deque<T>::Node* ptr,
+                                    list<T>* parent)
+    : ptr_(ptr), parent_(parent) {}
 
 template <typename T>
 typename list<T>::reference list<T>::ListIterator::operator*() const {
@@ -16,27 +18,39 @@ typename list<T>::reference list<T>::ListIterator::operator*() const {
 
 template <typename T>
 typename list<T>::ListIterator& list<T>::ListIterator::operator++() {
-  ptr_ = ptr_->next;
+  if (ptr_) ptr_ = ptr_->next;
   return *this;
 }
 
 template <typename T>
 typename list<T>::ListIterator list<T>::ListIterator::operator++(int) {
   ListIterator tmp = *this;
-  ptr_ = ptr_->next;
+  if (ptr_) ptr_ = ptr_->next;
   return tmp;
 }
 
 template <typename T>
 typename list<T>::ListIterator& list<T>::ListIterator::operator--() {
-  ptr_ = ptr_->prev;
+  if (ptr_ == nullptr) {
+    ptr_ = parent_->tail_;
+  } else if (ptr_->prev != nullptr) {
+    ptr_ = ptr_->prev;
+  } else {
+    throw std::out_of_range("Iterator cannot be decremented");
+  }
   return *this;
 }
 
 template <typename T>
 typename list<T>::ListIterator list<T>::ListIterator::operator--(int) {
   ListIterator tmp = *this;
-  ptr_ = ptr_->prev;
+  if (ptr_ == nullptr) {
+    ptr_ = parent_->tail_;
+  } else if (ptr_->prev != nullptr) {
+    ptr_ = ptr_->prev;
+  } else {
+    throw std::out_of_range("Iterator cannot be decremented");
+  }
   return tmp;
 }
 
@@ -131,22 +145,28 @@ typename list<T>::size_type list<T>::max_size() {
 
 template <typename T>
 typename list<T>::iterator list<T>::begin() {
-  return iterator(this->head_);
+  return iterator(this->head_, this);
 }
 
 template <typename T>
 typename list<T>::iterator list<T>::end() {
-  return this->head_ ? iterator(this->tail_->next) : begin();
+  if (this->tail_)
+    return iterator(this->tail_->next, this);
+  else
+    return iterator(nullptr, this);
 }
 
 template <typename T>
 typename list<T>::const_iterator list<T>::cbegin() const {
-  return const_iterator(this->head_);
+  return const_iterator(this->head_, this);
 }
 
 template <typename T>
 typename list<T>::const_iterator list<T>::cend() const {
-  return this->head_ ? const_iterator(this->tail_->next) : begin();
+  if (this->tail_)
+    return iterator(this->tail_->next, this);
+  else
+    return iterator(nullptr, this);
 }
 
 template <typename T>
@@ -165,7 +185,7 @@ typename list<T>::iterator list<T>::insert(iterator pos,
     cur->prev->next = new_node;
     cur->prev = new_node;
     new_node->next = cur;
-    return iterator(new_node);
+    return iterator(new_node, this);
   }
 }
 
@@ -238,9 +258,42 @@ void list<T>::unique() {
     }
   }
 }
+template <typename T>
+void list<T>::sort() {
+  if (!empty()) {
+    quickSort(begin(), --end());
+  }
+}
 
-// template <typename T>
-// void list<T>::sort() {}
+template <typename T>
+void list<T>::quickSort(iterator first, iterator last) {
+  if (first != last && first != nullptr) {
+    iterator pivot = partition(first, last);
+    if (pivot != first) {
+      iterator before_pivot = pivot;
+      --before_pivot;
+      quickSort(first, before_pivot);
+    }
+    quickSort(++pivot, last);
+  }
+}
+
+template <typename T>
+typename list<T>::iterator list<T>::partition(iterator first, iterator last) {
+  T pivot_value = *last;
+  iterator i = first;
+
+  for (iterator j = first; j != last; ++j) {
+    if (*j < pivot_value) {
+      if (i != j) {
+        std::swap(*i, *j);
+      }
+      ++i;
+    }
+  }
+  std::swap(*i, *last);
+  return i;
+}
 
 template <typename T>
 void list<T>::erase(iterator pos) {
