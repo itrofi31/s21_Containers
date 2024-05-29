@@ -96,8 +96,22 @@ TEST(List, sort) {
   list.sort();
   slist.sort();
   auto it = slist.begin();
+  for (const auto& i : list) {
+    EXPECT_EQ(i, *it++);
+  }
+}
+
+TEST(List, merge) {
+  s21::list<int> list = {4, 1, 6, 0, -21, 10};
+  s21::list<int> slist = {99, -99};
+  s21::list<int> expected = {-99, -21, 0, 1, 4, 6, 10, 99};
+  list.sort();
+  slist.sort();
+  list.merge(slist);
+  auto it = expected.begin();
 
   for (const auto& i : list) {
     EXPECT_EQ(i, *it++);
   }
+  EXPECT_TRUE(slist.empty());
 }
