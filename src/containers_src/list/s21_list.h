@@ -50,6 +50,7 @@ class list : public deque<T> {
    public:
     ListConstIterator();
     ListConstIterator(const ListIterator& ptr_);
+    ListConstIterator(typename deque<T>::Node* ptr, const list<T>* parent);
 
     const_reference operator*() const;
   };  // class ListConstIterator

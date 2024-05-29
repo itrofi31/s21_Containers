@@ -78,6 +78,11 @@ list<T>::ListConstIterator::ListConstIterator(const ListIterator& ptr_)
     : ListIterator(ptr_) {}
 
 template <typename T>
+list<T>::ListConstIterator::ListConstIterator(typename deque<T>::Node* ptr,
+                                              const list<T>* parent)
+    : ListIterator(ptr, const_cast<list<T>*>(parent)) {}
+
+template <typename T>
 list<T>::list() : deque<T>() {}
 
 template <typename T>
@@ -164,9 +169,9 @@ typename list<T>::const_iterator list<T>::cbegin() const {
 template <typename T>
 typename list<T>::const_iterator list<T>::cend() const {
   if (this->tail_)
-    return iterator(this->tail_->next, this);
+    return const_iterator(this->tail_->next, this);
   else
-    return iterator(nullptr, this);
+    return const_iterator(nullptr, this);
 }
 
 template <typename T>
