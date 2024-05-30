@@ -41,7 +41,6 @@ class list : public deque<T> {
    protected:
     typename deque<T>::Node* ptr_;
     list<T>* parent_;
-    // typename deque<T>::Node* last_node_;
   };  // class ListIterator
 
   class ListConstIterator : ListIterator {
