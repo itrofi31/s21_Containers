@@ -1,7 +1,7 @@
 .POSIX:
 
 CC := g++
-CFLAGS := -Wall -Werror -Wextra -std=c++17
+CFLAGS := -Wall -Werror -Wextra -std=c++17 -g
 LFLAGS := -lgtest
 
 LIB_H := $(wildcard containers_src/*/*.h)
@@ -14,14 +14,14 @@ CODE := $(TEST_CC) $(wildcard *.h) $(wildcard test_src/*.h) $(LIB_H) $(LIB_TPP)
 
 define compile
 	$(info # compile $@)
-	$(CC) -o $@ $(CFLAGS) $(INCS) $(DFLAGS) $(1) $(filter %.cc,$^) $(LFLAGS)
+	$(CC) -o $@ $(CFLAGS) $(INCS) $(DFLAGS) $(1) $(filter %.cc,$^) $(LFLAGS) -fsanitize=address
 endef
 
 all: clean test
 
 clean:
-	rm -f test *.info *.dSYM *.gcda *.gcno valgrind.log
-	rm -rf report/
+	rm -f test *.info  *.gcda *.gcno valgrind.log
+	rm -rf report/ *.dSYM
 
 # TESTS
 test: $(TEST_CC)
@@ -29,8 +29,8 @@ test: $(TEST_CC)
 	./test
 
 gcov_report: test
-	lcov -t "result" --no-external -o res.info -c -d .
-	genhtml -o report res.info
+	lcov -t "result" --no-external -o res.info -c -d .  --ignore-errors inconsistent
+	genhtml -o report res.info  --ignore-errors inconsistent 
 	-open report/index.html
 
 # LEAKS AND STYLE
