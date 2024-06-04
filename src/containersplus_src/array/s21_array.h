@@ -17,39 +17,9 @@ class array {
   using value_type = T;
   using reference = T &;
   using const_reference = const T &;
-  using iterator = ArrayIterator;
+  using iterator = T *;
   using const_iterator = ArrayConstIterator;
   using size_type = std::size_t;
-
-  class ArrayIterator {
-    friend class array<T>;
-
-   public:
-    ArrayIterator();
-
-    reference operator*() const;
-
-    ArrayIterator &operator++();
-    ArrayIterator &operator--();
-
-    bool operator==(const ArrayIterator &other) const;
-    bool operator!=(const ArrayIterator &other) const;
-  };  // class ArrayIterator
-
-  class ArrayConstIterator {
-    friend class array<T>;
-
-   public:
-    ArrayConstIterator();
-
-    const_reference operator*() const;
-
-    ArrayConstIterator &operator++();
-    ArrayConstIterator &operator--();
-
-    bool operator==(const ArrayConstIterator &other) const;
-    bool operator!=(const ArrayConstIterator &other) const;
-  };  // class ArrayConstIterator
 
   array();
   array(std::initializer_list<value_type> const &items);
@@ -64,7 +34,7 @@ class array {
   reference operator[](size_type pos);
   const_reference front();
   const_reference back();
-  T *data();
+  iterator data();
 
   // ITERATORS
 
