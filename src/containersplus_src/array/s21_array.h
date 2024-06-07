@@ -3,6 +3,7 @@
 
 #include <cstddef>           // std::size_t
 #include <initializer_list>  // std::initializer_list
+#include <utility>           //std::move
 
 // STL reference
 // https://en.cppreference.com/w/cpp/container/array
@@ -26,6 +27,7 @@ class array {
   array(const array &a);
   array(array &&a);
   ~array();
+  array &operator=(const array &a);
   array &operator=(array &&a);
 
   // ACCESS
