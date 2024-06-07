@@ -80,5 +80,5 @@ TEST(Array, empty) {
 
 TEST(Array, max_size) {
   s21::array<int, 5> arr = {1, 2, 3, 4, 5};
-  EXPECT_TRUE(arr.size() == size_t(5));
+  EXPECT_TRUE(arr.max_size() == size_t(5));
 }
